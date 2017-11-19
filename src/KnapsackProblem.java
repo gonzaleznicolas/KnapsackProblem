@@ -12,6 +12,7 @@ class KnapsackProblem
 		int[] weight = new  int[]{1, 5, 3, 4};
 		int maxWeight = 8;
 		
+		// input: a set of weight-value pairs: (w1, v1), ... , (wi, vi) , .... , (wn, vn)
 		KnapsackProblem kp = new KnapsackProblem(value, weight, maxWeight);
 
 		kp.find_OPT();
@@ -58,32 +59,36 @@ class KnapsackProblem
 	  
 	}
 	
-	public HashSet<Integer> find_O_usualMethod(int tempN, int tempW)
+	public HashSet<Integer> find_O_usualMethod(int i, int tempW)
 	{
-		if (tempN==0)
+		// i means we are considering the first i pairs of the original input
+		// input: a set of weight-value pairs: (w1, v1), ... , (wi, vi) , .... , (wn, vn)
+		if (i==0)
 			return new HashSet<Integer>();
-		else if (w.get(tempN)>tempW)
-			return find_O_usualMethod(tempN-1, tempW);
-		else if (OPT[tempN-1][tempW] > (OPT[tempN-1][tempW-w.get(tempN)] + v.get(tempN)))
-			return find_O_usualMethod(tempN-1, tempW);
+		else if (w.get(i)>tempW)
+			return find_O_usualMethod(i-1, tempW);
+		else if (OPT[i-1][tempW] > (OPT[i-1][tempW-w.get(i)] + v.get(i)))
+			return find_O_usualMethod(i-1, tempW);
 		else
 		{
-			HashSet<Integer> set = find_O_usualMethod(tempN-1, tempW-w.get(tempN));
-			set.add(tempN);
+			HashSet<Integer> set = find_O_usualMethod(i-1, tempW-w.get(i));
+			set.add(i);
 			return set;
 		}
 	}
 	
-	public HashSet<Integer> find_O_alternativeMethod(int tempN, int tempW)
+	public HashSet<Integer> find_O_alternativeMethod(int i, int tempW)
 	{
-		if (tempN==0 || tempW == 0)
+		// i means we are considering the first i pairs of the original input
+		// input: a set of weight-value pairs: (w1, v1), ... , (wi, vi) , .... , (wn, vn)
+		if (i==0)
 			return new HashSet<Integer>();
-		else if (OPT[tempN][tempW] == OPT[tempN-1][tempW])
-			return find_O_alternativeMethod(tempN-1, tempW);
+		else if (OPT[i][tempW] == OPT[i-1][tempW])
+			return find_O_alternativeMethod(i-1, tempW);
 		else
 		{
-			HashSet<Integer> set = find_O_alternativeMethod(tempN-1, tempW-w.get(tempN));
-			set.add(tempN);
+			HashSet<Integer> set = find_O_alternativeMethod(i-1, tempW-w.get(i));
+			set.add(i);
 			return set;
 		}
 	}
